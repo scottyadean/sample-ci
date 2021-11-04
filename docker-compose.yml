@@ -1,0 +1,49 @@
+# list of container
+  # redis server
+    # redis image from docker hub
+  # node app
+    # build based off Docker file
+    # map ports
+
+# building and running
+# -> docker-compose up --build # build all serives inside of compose file. 
+# -> docker build node-app # build one service inside of compose file
+# -> docker up # run images
+# -> docker down # stop all images. 
+# -> docker up -d # start serives in the background
+
+# restart policy 
+ # [  no, always, on-failure, unless-stopped ] 
+
+
+#docker compose ver.
+version: '3'
+
+
+services:
+  #react service
+  web:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports: 
+      # local:container
+      - "3000:3000" 
+    volumes:
+      - '/app/node_modules'
+      - '.:/app'
+  # test service
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '/app/node_modules'
+      - '.:/app'
+    command: ["npm", "run", "test"]
+
+
+
+
+
